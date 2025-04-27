@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Posts;
 
+use App\Models\User;
+use App\Models\Comments\Comment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['title', 'content', 'user_id'];
     
     public function user(): BelongsTo
     {
