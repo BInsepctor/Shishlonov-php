@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Coments;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Comments\CommentService;
+use App\Http\Requests\Comments\StoreCommentRequest;
+use App\Services\Comments\CommentService;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -33,9 +34,9 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCommentRequest $request)
     {
-        $this->commentService->createComment($request->all());
+        $this->commentService->createComment($request->validated());
 
         return redirect()->back();
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Services\Posts;
+namespace App\Services\Posts;
 
 use App\Models\Posts\Post;
 use Illuminate\Support\Facades\Validator;
@@ -24,14 +24,11 @@ class PostService
 
     public function createPost(array $data)
     {
-        $this->validatePostData($data);
-        
         return Post::create($data);
     }
 
     public function updatePost(string $id, array $data)
     {
-        $this->validatePostData($data);
         $post = $this->getPostById($id);
         $post->update($data);
         return $post;
@@ -43,14 +40,4 @@ class PostService
     //     return $post->delete();
     // }
 
-    protected function validatePostData(array $data)
-    {
-        $validate = [
-            'title' => 'required|string|max:255',
-            'content' => 'required|string',
-            'user_id' => 'required|integer'
-        ];
-
-        return Validator::make($data, $validate)->validate();
-    }
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Users;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Users\UserService;
+use App\Http\Requests\Users\StoreUserRequest;
+use App\Http\Requests\Users\UpdateUserRequest;
+use App\Services\Users\UserService;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -37,9 +39,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $this->userService->createUser($request->all());
+        $this->userService->createUser($request->validated());
 
         return redirect()->route('users.index');
     }
@@ -64,9 +66,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
-        $this->userService->updateUser($id, $request->all());
+        $this->userService->updateUser($id, $request->validated());
         return redirect()->route('users.index');
     }
 

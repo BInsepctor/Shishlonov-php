@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Posts;
 
 use App\Http\Controllers\Controller;
-use App\Http\Services\Posts\PostService;
+use App\Services\Posts\PostService;
 use Illuminate\Http\Request;
+use App\Http\Requests\Posts\StorePostRequest;
+use App\Http\Requests\Posts\UpdatePostRequest;
 
 class PostController extends Controller
 {
@@ -35,9 +37,9 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $this->postService->createPost($request->all());
+        $this->postService->createPost($request->validated());
         
         return redirect()->route('posts.index');
     }
@@ -63,9 +65,9 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdatePostRequest $request, string $id)
     {
-        $this->postService->updatePost($id, $request->all());
+        $this->postService->updatePost($id, $request->validated());
         return redirect()->route('posts.index');
     }
 
