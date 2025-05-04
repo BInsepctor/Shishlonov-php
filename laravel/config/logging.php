@@ -58,6 +58,14 @@ return [
             'ignore_exceptions' => false,
         ],
 
+        'model_changes' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/model_changes.log'),
+            'level' => 'info',
+            'days' => 7, 
+            'formatter' => \Monolog\Formatter\JsonFormatter::class, 
+        ],
+
         'single' => [
             'driver' => 'single',
             'path' => storage_path('logs/laravel.log'),

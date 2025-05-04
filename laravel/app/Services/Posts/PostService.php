@@ -3,7 +3,9 @@
 namespace App\Services\Posts;
 
 use App\Models\Posts\Post;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
+
 
 class PostService
 {
@@ -22,9 +24,21 @@ class PostService
         return Post::with(['user', 'comments.user'])->find($id);
     }
 
-    public function createPost(array $data)
+    public function createPost(array $data, ?UploadedFile $image = null): Post
     {
-        return Post::create($data);
+        $post = Post::create([
+            'title' => $data['title'],
+            'content' => $data['content'],
+            'user_id' => $data['user_id']
+        ]);
+        
+    
+        if (isset($data['image'])) {
+            $post->addMedia($data['image']->getPathname())
+                 ->usingFileName($data['image']->getClientOriginalName())
+                 ->toMediaCollection('posts');
+        }
+        return $post;
     }
 
     public function updatePost(string $id, array $data)
@@ -40,4 +54,13 @@ class PostService
     //     return $post->delete();
     // }
 
+    protected function attachImage(Post $post, UploadedFile $image, bool $clearExisting = false): void
+    {
+        if ($clearExisting) {
+            $post->clearMediaCollection('posts');
+        }
+
+        $post->addMedia($image)
+            ->toMediaCollection('posts');
+    }
 }

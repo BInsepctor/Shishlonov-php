@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Posts;
 
+use App\Models\Posts\Post;
 use App\Http\Controllers\Controller;
 use App\Services\Posts\PostService;
 use Illuminate\Http\Request;
@@ -40,7 +41,7 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $this->postService->createPost($request->validated());
-        
+
         return redirect()->route('posts.index');
     }
 

@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<div class="post">
+    @if($post->hasMedia('posts'))
+        <img src="{{ $post->getFirstMediaUrl('posts') }}" class="img-fluid mb-4">
+    @endif
+</div>
 <div class="container">
     <h1>{{$post->title}}</h1>
     <p class="text-muted">Автор: {{$post->user->name}}</p>

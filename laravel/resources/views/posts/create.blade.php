@@ -12,9 +12,14 @@
             </ul>
         </div>
     @endif
-    <form method="POST" action="{{route('posts.store')}}">
+    <form method="POST" enctype="multipart/form-data" action="{{route('posts.store')}}">
         
         @csrf
+        <div class="form-group mb-3">
+        <label> Изображение поста</label>
+        <input type="file" name="image" id="image" 
+class="form-control">
+        </div>
         <div class="form-group">
         <label>Автор</label>
         <select name="user_id" class="form-control" required>

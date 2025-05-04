@@ -22,9 +22,9 @@ class UpdatePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'sometimes|string|max:255',
-            'content' => 'sometimes|string',
-            'user_id' => 'sometimes|integer|exists:users,id'
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'user_id' => 'required|integer' 
         ];
     }
 }
