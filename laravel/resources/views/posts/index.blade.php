@@ -4,6 +4,7 @@
 <div class="container">
     <h1>Список постов</h1>
     <a href="{{route('posts.create')}}" class="btn btn-primary mb-3">Создать пост</a>
+
     <table class="table">
         <thead>
             <tr>

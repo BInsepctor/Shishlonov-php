@@ -23,9 +23,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->userService->getAllUsers();
+        if (auth()->user()->hasRole('admin')) {
+            $users = $this->userService->getAllUsers();
+            return view('users.index', ['users' => $users]);
+        }
 
-        return view('users.index', ['users' => $users]);
+        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
     }
 
     /**
@@ -33,7 +36,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        if (auth()->user()->hasRole('admin')) {
+            return view('users.create');
+        }
+
+        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
     }
 
     /**
@@ -41,9 +48,12 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $this->userService->createUser($request->validated());
+        if (auth()->user()->hasRole('admin')) {
+            $this->userService->createUser($request->validated());
+            return redirect()->route('users.index');
+        }
 
-        return redirect()->route('users.index');
+        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
     }
 
     /**
@@ -59,8 +69,12 @@ class UserController extends Controller
      */
     public function edit(string $id)
     {
-        $user = $this->userService->getUserById($id);
-        return view('users.edit',compact('user'));
+        if (auth()->user()->hasRole('admin')) {
+            $user = $this->userService->getUserById($id);
+            return view('users.edit', compact('user'));
+        }
+
+        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
     }
 
     /**
@@ -68,8 +82,12 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, string $id)
     {
-        $this->userService->updateUser($id, $request->validated());
-        return redirect()->route('users.index');
+        if (auth()->user()->hasRole('admin')) {
+            $this->userService->updateUser($id, $request->validated());
+            return redirect()->route('users.index');
+        }
+
+        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
     }
 
     /**

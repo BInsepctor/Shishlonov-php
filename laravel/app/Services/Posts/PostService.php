@@ -24,7 +24,7 @@ class PostService
         return Post::with(['user', 'comments.user'])->find($id);
     }
 
-    public function createPost(array $data, ?UploadedFile $image = null): Post
+    public function createPost(array $data)
     {
         $post = Post::create([
             'title' => $data['title'],
@@ -54,13 +54,5 @@ class PostService
     //     return $post->delete();
     // }
 
-    protected function attachImage(Post $post, UploadedFile $image, bool $clearExisting = false): void
-    {
-        if ($clearExisting) {
-            $post->clearMediaCollection('posts');
-        }
 
-        $post->addMedia($image)
-            ->toMediaCollection('posts');
-    }
 }
