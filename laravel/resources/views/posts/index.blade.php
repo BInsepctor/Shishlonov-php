@@ -23,11 +23,7 @@
                     <td>
                         <a href="{{route('posts.edit', $post)}}" class="btn btn-primary mb-3">Редактировать</a>
                         <a href="{{route('posts.show', $post)}}" class="btn btn-primary mb-3">Просмотр</a>
-                        <!-- <form action="{{ route('posts.destroy', $post) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Вы уверены?')">Удалить</button>
-                        </form> -->
+
                     </td>
                 </tr>
             @endforeach

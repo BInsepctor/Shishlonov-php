@@ -4,6 +4,7 @@ namespace App\Models\Posts;
 
 use App\Models\User;
 use App\Models\Comments\Comment;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,7 +13,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Post extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    use InteractsWithMedia, HasFactory;
 
     protected $fillable = ['title', 'content', 'user_id'];
     

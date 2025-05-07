@@ -10,24 +10,11 @@ class UpdatePostRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    // public function authorize(): bool
-    // {
-    //     $user = Auth::user();
-    //     dd(Auth::user()->roles);
-    //     if (!$user) {
-    //         return false; 
-    //     }
-    
-    //     if ($user->hasRole('admin')) {
-    //         return true;
-    //     }
-    
-    //     if ($user->hasRole('editor')) {
-    //         return $user->id == $this->route('post')->user_id;
-    //     }
-        
-    //     return false;
-    // }
+    public function authorize(): bool
+    {
+        $user = $this->user(); 
+        return $user && ($user->hasRole('admin') || $user->hasRole('editor'));
+    }
 
     /**
      * Get the validation rules that apply to the request.

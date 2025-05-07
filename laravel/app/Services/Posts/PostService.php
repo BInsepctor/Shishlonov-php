@@ -16,12 +16,12 @@ class PostService
 
     public function getPostById(string $id)
     {
-        return Post::find($id);
+        return Post::findOrFail($id);
     }
 
     public function getPostWithComments(string $id)
     {
-        return Post::with(['user', 'comments.user'])->find($id);
+        return Post::with(['user', 'comments.user'])->findOrFail($id);
     }
 
     public function createPost(array $data)

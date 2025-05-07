@@ -9,11 +9,11 @@ use App\Http\Requests\Posts\UpdatePostRequest;
 
 class PostController extends Controller
 {
-    protected $postService;
 
-    public function __construct(PostService $postService)
+
+    public function __construct(protected PostService $postService)
     {
-        $this->postService = $postService;
+        //$this->postService = $postService;
     }
     
     /**
@@ -21,8 +21,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        
         $posts = $this->postService->getAllPosts();
+
         return view('posts.index', ['posts' => $posts]);
     }
 
@@ -31,11 +31,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('editor')) {
-            return view('posts.create');
-        }
-
-        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
+        return view('posts.create');
     }
 
     /**
@@ -43,12 +39,9 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('editor')) {
-            $this->postService->createPost($request->validated());
-            return redirect()->route('posts.index');
-        }
+        $this->postService->createPost($request->validated());
 
-        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
+        return redirect()->route('posts.index');
     }
 
     /**
@@ -65,12 +58,8 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('editor')) {
-            $post = $this->postService->getPostById($id);
-            return view('posts.edit', compact('post'));
-        }
-
-        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
+        $post = $this->postService->getPostById($id);
+        return view('posts.edit', compact('post'));
     }
 
     /**
@@ -78,12 +67,9 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, string $id)
     {
-        if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('editor')) {
             $this->postService->updatePost($id, $request->validated());
-            return redirect()->route('posts.index');
-        }
 
-        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
+            return redirect()->route('posts.index');
     }
 
     /**
