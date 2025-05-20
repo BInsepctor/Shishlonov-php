@@ -21,12 +21,9 @@
 class="form-control">
         </div>
         <div class="form-group">
-        <label>Автор</label>
-        <select name="user_id" class="form-control" required>
-            @foreach(\App\Models\User::all() as $user)
-                <option value="{{ $user->id }}">{{$user->name}}</option>
-            @endforeach
-        </select>
+  
+        <input type="hidden" name="user_id" value="{{ auth()->id() }}"> <!-- Скрытое поле для ID пользователя -->
+
         </div>
         <div class="form-group mb-3">
             <label for="title">Заголовок</label>

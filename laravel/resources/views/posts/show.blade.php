@@ -27,15 +27,27 @@
             </div>
         @endforeach
     @endif
-    <form method="POST" action="{{route('comments.store')}}">
-        @csrf
-        <input type="hidden" name="post_id" value="{{$post->id}}">
-        <input type="hidden" name="user_id" value="{{$post->user_id}}">
-        <div class="form-group mb-3">
-            <label for="content">Добавить комментарий</label>
-            <textarea class="form-control @error('content') is-invalid @enderror" name="content" rows="3" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Отправить</button>
-    </form>
+<form method="POST" action="{{ route('comments.store') }}">
+    @csrf
+    <input type="hidden" name="post_id" value="{{ $post->id }}">
+    @auth
+        <input type="hidden" name="user_id" value="{{ auth()->id() }}">
+    @endauth
+    <div class="form-group mb-3">
+        <label for="content">Добавить комментарий</label>
+        <textarea class="form-control @error('content') is-invalid @enderror" 
+                  name="content" rows="3" required></textarea>
+        @error('content')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+    </div>
+    <button type="submit" class="btn btn-primary">
+        @auth
+            Отправить
+        @else
+            Войдите, чтобы оставить комментарий
+        @endauth
+    </button>
+</form>
 </div>
 @endsection

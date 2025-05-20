@@ -5,30 +5,21 @@ namespace App\Http\Controllers\Users;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\StoreUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Services\Users\UserService;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    protected $userService;
-
-    public function __construct(UserService $userService)
-    {
-        $this->userService = $userService;    
-    }
-
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(UserService $userService)
     {
-        if (auth()->user()->hasRole('admin')) {
-            $users = $this->userService->getAllUsers();
-            return view('users.index', ['users' => $users]);
-        }
-
-        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
+        $users = $userService->getAll();
+        $usersCollection = UserResource::collection($users)->toArray(request());
+        return view('users.index', ['users' => $usersCollection]);
     }
 
     /**
@@ -36,24 +27,16 @@ class UserController extends Controller
      */
     public function create()
     {
-        if (auth()->user()->hasRole('admin')) {
-            return view('users.create');
-        }
-
-        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
+        return view('users.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request, UserService $userService)
     {
-        if (auth()->user()->hasRole('admin')) {
-            $this->userService->createUser($request->validated());
-            return redirect()->route('users.index');
-        }
-
-        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
+        $userService->create($request->validated());
+        return redirect()->route('users.index');
     }
 
     /**
@@ -67,27 +50,20 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id, UserService $userService)
     {
-        if (auth()->user()->hasRole('admin')) {
-            $user = $this->userService->getUserById($id);
-            return view('users.edit', compact('user'));
-        }
-
-        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
+        $user = $userService->getById($id);
+        return view('users.edit', ['user' => $user]);        
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, string $id)
+    public function update(UpdateUserRequest $request, string $id, UserService $userService)
     {
-        if (auth()->user()->hasRole('admin')) {
-            $this->userService->updateUser($id, $request->validated());
-            return redirect()->route('users.index');
-        }
-
-        return redirect()->route('posts.index')->with('error', 'У вас нет доступа к этой странице.');
+        $userService->update($id, $request->validated());
+        return redirect()->route('users.index');
+    
     }
 
     /**

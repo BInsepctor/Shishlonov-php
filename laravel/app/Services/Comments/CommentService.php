@@ -2,14 +2,13 @@
 
 namespace App\Services\Comments;
 
-use App\Models\Comments\Comment;
-use Illuminate\Support\Facades\Validator;
+use App\Jobs\CommentStoreJob;
 
 class CommentService
 {
-    public function createComment(array $data)
+    public function create(array $data)
     {    
-        return Comment::create($data);
+        CommentStoreJob::dispatch($data);
     }
 
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Posts;
 
+use App\Jobs\PostStoreJob;
 use App\Models\Posts\Post;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Validator;
@@ -9,12 +10,12 @@ use Illuminate\Support\Facades\Validator;
 
 class PostService
 {
-    public function getAllPosts()
+    public function getAll()
     {
         return Post::all();
     }
 
-    public function getPostById(string $id)
+    public function getById(string $id)
     {
         return Post::findOrFail($id);
     }
@@ -24,7 +25,7 @@ class PostService
         return Post::with(['user', 'comments.user'])->findOrFail($id);
     }
 
-    public function createPost(array $data)
+    public function create(array $data)
     {
         $post = Post::create([
             'title' => $data['title'],
@@ -41,9 +42,9 @@ class PostService
         return $post;
     }
 
-    public function updatePost(string $id, array $data)
+    public function update(string $id, array $data)
     {
-        $post = $this->getPostById($id);
+        $post = $this->getById($id);
         $post->update($data);
         return $post;
     }

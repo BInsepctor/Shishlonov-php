@@ -3,6 +3,7 @@
 namespace Database\Factories\Posts;
 
 use App\Models\User;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,10 +18,11 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $userId = User::pluck('id')->toArray();
         return [
             'title' => $this->faker->sentence(),
             'content' => $this->faker->sentence(),
-            'user_id' => User::factory(),
+            'user_id' => $userId ? $this->faker->randomElement($userId) : User::factory(),
         ];
     }
 }

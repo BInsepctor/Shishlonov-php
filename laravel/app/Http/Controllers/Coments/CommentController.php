@@ -9,12 +9,7 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    protected $commentService;
-
-    public function __construct(CommentService $commentService)
-    {
-        $this->commentService = $commentService;
-    }
+   
     /**
      * Display a listing of the resource.
      */
@@ -34,9 +29,9 @@ class CommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCommentRequest $request)
+    public function store(StoreCommentRequest $request, CommentService $commentService)
     {
-        $this->commentService->createComment($request->validated());
+        $commentService->create($request->validated());
 
         return redirect()->back();
     }

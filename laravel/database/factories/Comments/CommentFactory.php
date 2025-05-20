@@ -18,10 +18,12 @@ class CommentFactory extends Factory
      */
     public function definition(): array
     {
+        $userId = User::pluck('id')->toArray();
+        $postId = Post::pluck('id')->toArray();
         return [
             'content' => $this->faker->sentence(),
-            'user_id' => User::factory(),
-            'post_id' => Post::factory(),
+            'user_id' => $userId ? $this->faker->randomElement($userId) : User::factory(),
+            'post_id' => $postId ? $this->faker->randomElement($postId) : Post::factory(),
         ];
     }
 }
